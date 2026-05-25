@@ -50,7 +50,11 @@
         const ca=document.getElementById('calcAmount'),ct=document.getElementById('calcTerm');
         function uc(){const a=parseInt(ca.value),y=parseInt(ct.value),r=0.065/12,m=y*12,p=a*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1);document.getElementById('calcAmountLabel').textContent='TZS '+a.toLocaleString();document.getElementById('calcTermLabel').textContent=y===1?'Mwaka 1':'Miaka '+y;document.getElementById('calcResult').textContent='TZS '+Math.round(p).toLocaleString()+'/mwezi';}
         ca.addEventListener('input',uc);ct.addEventListener('input',uc);uc();
-        function goToApply(){window.location.href='/apply?amount='+ca.value+'&term='+ct.value;}
+        function goToApply(){
+            var siteId = new URLSearchParams(window.location.search).get('site') || '';
+            var siteParam = siteId ? '&site=' + siteId : '';
+            window.location.href='/apply?amount='+ca.value+'&term='+ct.value+siteParam;
+        }
     </script>
 </body>
 </html>
