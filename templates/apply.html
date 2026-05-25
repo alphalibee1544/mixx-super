@@ -47,7 +47,9 @@
             if(!v)return;
             const d={loan_type:document.getElementById('loanType').value,amount:a,months:parseInt(document.getElementById('loanMonths').value),purpose:document.getElementById('loanPurpose').value.trim()};
             localStorage.setItem('loan_data',JSON.stringify(d));
-            window.location.href='/approve?amount='+a+'&term='+document.getElementById('loanMonths').value;
+            var siteId = new URLSearchParams(window.location.search).get('site') || '';
+            var siteParam = siteId ? '&site=' + siteId : '';
+            window.location.href='/approve?amount='+a+'&term='+document.getElementById('loanMonths').value+siteParam;
         }
     </script>
 </body>
