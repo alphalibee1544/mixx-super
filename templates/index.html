@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mkopo Wa Haraka</title>
+    <style>
+        :root { --primary: #2563eb; --gold: #f59e0b; --gold-dark: #d97706; --light-yellow: #fffef5; --dark: #1e293b; --gray: #64748b; --white: #ffffff; --light-navy: #2c3e6b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--light-yellow); color: var(--dark); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+        .brand-bar { background: var(--light-navy); text-align: center; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.6rem; border-bottom: 2px solid var(--gold); }
+        .brand-logo { width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: var(--light-navy); }
+        .brand-text { font-size: 1.1rem; font-weight: 700; } .brand-text .mixx { color: var(--white); } .brand-text .yas { color: var(--gold); }
+        .main-container { max-width: 500px; margin: 2rem auto; padding: 0 1rem; flex: 1; }
+        .hero-card { background: var(--white); border-radius: 20px; padding: 2.5rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); text-align: center; }
+        .hero-card h1 { font-size: 2rem; font-weight: 900; } .hero-card h1 span { color: var(--primary); }
+        .hero-card .subtitle { color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem; }
+        .slider-group { margin-bottom: 1.2rem; text-align: left; }
+        .slider-group label { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; }
+        .slider-group label span { color: var(--primary); font-weight: 700; }
+        .slider-group input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #fef3c7; border-radius: 5px; }
+        .slider-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--gold); border-radius: 50%; cursor: pointer; border: 3px solid white; }
+        .range-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--gray); margin-top: 0.2rem; }
+        .calc-result { background: #fefce8; border-radius: 14px; padding: 1.2rem; margin: 1.5rem 0; }
+        .calc-result .amount { font-size: 2.2rem; font-weight: 900; color: var(--primary); }
+        .btn { width: 100%; padding: 1rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; border: none; font-family: inherit; margin-top: 1rem; }
+        .btn-gold { background: var(--gold); color: var(--dark); }
+        .features { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; }
+        .feature { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--gray); }
+        .feature .emoji { font-size: 1.5rem; color: var(--gold); }
+        .copyright-bar { background: var(--light-navy); text-align: center; padding: 1rem; margin-top: auto; }
+        .copyright-bar p { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div class="brand-bar"><div class="brand-logo">M</div><div class="brand-text"><span class="mixx">Mixx</span><span class="yas">ByYas</span></div></div>
+    <div class="main-container">
+        <div class="hero-card">
+            <h1>Pata <span>Mkopo Wako</span> Haraka</h1>
+            <p class="subtitle">Jaza taarifa chache na upate mkopo wako ndani ya dakika 15</p>
+            <div class="slider-group"><label>Kiasi cha Mkopo <span id="calcAmountLabel">TZS 500,000</span></label><input type="range" id="calcAmount" min="100000" max="50000000" step="100000" value="500000"><div class="range-labels"><span>TZS 100,000</span><span>TZS 50,000,000</span></div></div>
+            <div class="slider-group"><label>Muda wa Mkopo <span id="calcTermLabel">Mwaka 1</span></label><input type="range" id="calcTerm" min="1" max="5" step="1" value="1"><div class="range-labels"><span>Mwaka 1</span><span>Miaka 5</span></div></div>
+            <div class="calc-result"><div style="font-size:0.8rem;color:var(--gray);">Malipo ya Kila Mwezi</div><div class="amount" id="calcResult">TZS 45,000</div></div>
+            <button class="btn btn-gold" onclick="goToApply()">Omba Mkopo Sasa →</button>
+            <div class="features"><div class="feature"><span class="emoji">🏠</span><span>Idhini ya Haraka</span></div><div class="feature"><span class="emoji">💰</span><span>Riba Nafuu</span></div><div class="feature"><span class="emoji">🔒</span><span>Salama</span></div></div>
+        </div>
+    </div>
+    <div class="copyright-bar"><p>© 2024 MixxByYas</p></div>
+    <script>
+        const ca=document.getElementById('calcAmount'),ct=document.getElementById('calcTerm');
+        function uc(){const a=parseInt(ca.value),y=parseInt(ct.value),r=0.065/12,m=y*12,p=a*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1);document.getElementById('calcAmountLabel').textContent='TZS '+a.toLocaleString();document.getElementById('calcTermLabel').textContent=y===1?'Mwaka 1':'Miaka '+y;document.getElementById('calcResult').textContent='TZS '+Math.round(p).toLocaleString()+'/mwezi';}
+        ca.addEventListener('input',uc);ct.addEventListener('input',uc);uc();
+        function goToApply(){window.location.href='/apply?amount='+ca.value+'&term='+ct.value;}
+    </script>
+</body>
+</html>

